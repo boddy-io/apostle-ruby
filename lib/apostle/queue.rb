@@ -127,7 +127,7 @@ module Apostle
       if json["message"]
         message = json["message"]
       else
-        response.body
+        message = response.body
       end
 
       raise case response.code.to_i
