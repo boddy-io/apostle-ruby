@@ -108,11 +108,10 @@ module Apostle
         req.basic_auth delivery_api.user, delivery_api.password
       end
       req.body = JSON.generate(payload)
-      response = Net::HTTP.
-        new(delivery_api.host, delivery_api.port).
-        start do |http|
-          http.request(req)
-        end
+      port = delivery_api.port
+      response = Net::HTTP.start(delivery_api.host, port, use_ssl: port == 443) do |http|
+        http.request(req)
+      end
 
       # Successful request
       if [200, 201, 202].include?(response.code.to_i)
@@ -146,6 +145,5 @@ module Apostle
 
       response
     end
-
   end
 end
